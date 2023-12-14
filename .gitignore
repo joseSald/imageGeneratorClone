@@ -11,6 +11,8 @@
 # production
 /build
 
+YOUTUBETIMELAST.HTML
+
 # misc
 .env
 .DS_Store

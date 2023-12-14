@@ -87,3 +87,15 @@ p{
     max-width: 100%;
   }
 }
+
+.extra-info{
+  text-align: center;
+}
+.extra-info label{
+  cursor: pointer;
+  color: #000;
+}
+.extra-info label:hover{
+  text-decoration: underline rgb(46, 49, 60);
+  
+}
