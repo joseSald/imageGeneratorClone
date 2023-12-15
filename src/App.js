@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import Modal from './components/Modal';
+import Modal from './components/Modal.js';
 const App = () => {
   const [images, setImages] = useState(null);
   const [value, setValue] = useState(null);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   const surpriseOptions = [
     'A blue ostrich eating melon',
     'A matisse style shark on the telephone',
@@ -49,7 +49,9 @@ const App = () => {
     console.log(e.target.files[0]);
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
+    setModalOpen(true)
     setSelectedImage(e.target.files[0]);
+    e.target.value = null
     try {
       const options = {
         method: 'POST',
@@ -65,6 +67,29 @@ const App = () => {
       console.error(error);
     }
   };
+
+  const generateVariations = async () => {
+    setImages(null)
+    if(selectedImage === null){
+      setError('No image was selected')
+      setModalOpen(false)
+      return
+    }
+    try {
+      const options = {
+        method: 'POST'
+
+      }
+     const response =  await fetch('http://localhost:8000/variations', options)
+     const data = await response.json()
+     console.log(data);
+     setImages(data)
+     setError(null)
+     setModalOpen(false)
+    } catch (error) {
+        console.error(error)
+    }
+  }
 
   return (
     <div className="app">
@@ -105,6 +130,7 @@ const App = () => {
               setModalOpen={setModalOpen}
               setSelectedImage={setSelectedImage}
               selectedImage={selectedImage}
+              generateVariations={generateVariations}
             />
           </div>
         )}
